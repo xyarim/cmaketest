@@ -18,10 +18,10 @@ android {
         buildConfig = true
     }
     externalNativeBuild {
-//        cmake {
-//            version "3.30.5"
-//            path "src/main/cpp/CMakeLists.txt"
-//        }
+        cmake {
+            version "3.30.5"
+            path "src/main/cpp/CMakeLists.txt"
+        }
     }
 
     compileOptions {
