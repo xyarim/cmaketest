@@ -60,4 +60,4 @@ jobs:
         with:
           cache-disabled: true
           arguments: assembleDebug --no-daemon --info --stacktrace
-      -
+      
