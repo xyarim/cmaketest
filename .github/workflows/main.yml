@@ -58,9 +58,6 @@ jobs:
             /usr/local/bin/cmake --version
             ls
       -
-        name: Set up CMake directory in local.properties
-        run: echo "cmake.dir=/usr/local/bin/cmake" >> ./local.properties
-      -
         name: Build
         uses: gradle/gradle-build-action@v3
         with:
