@@ -1,0 +1,141 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdk  34
+    namespace 'com.getbouncer.cardscan.base'
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdk  34
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "CARDSCAN_VERSION", "\"$version\""
+
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+    externalNativeBuild {
+//        cmake {
+//            version "3.30.5"
+//            path "src/main/cpp/CMakeLists.txt"
+//        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17' // Or '17' for Java 17
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    ndkVersion '26.1.10909125'
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation 'org.tensorflow:tensorflow-lite:2.4.0'
+    implementation 'androidx.annotation:annotation:1.6.0'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.6.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Espresso Idling Resource library
+    androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
+
+}
+
+dependencies {
+    testImplementation libs.junit
+}
+
+ext {
+    bintrayRepo = 'cardscan-base-android'
+    bintrayName = 'cardscan-base-android'
+    bintrayOrg = 'bouncerpaid'
+
+    publishedGroupId = 'com.getbouncer'
+    libraryName = 'cardscan-base'
+    artifact = 'cardscan-base'
+
+    libraryDescription = 'This library provides an Activity that you can use to scan credit and debit cards.'
+
+    siteUrl = 'https://github.com/getbouncer/cardscan-android'
+    gitUrl = 'https://github.com/getbouncer/cardscan-android.git'
+
+    libraryVersion = version
+
+    developerId = 'getbouncer'
+    developerName = 'Bouncer Technologies'
+    developerEmail = 'contact@getbouncer.com'
+
+    licenseName = 'BSD 3-Clause'
+    licenseUrl = 'http://opensource.org/licenses/BSD-3-Clause'
+    allLicenses = ["BSD 3-Clause", "Apache-2.0"]
+}
+
+
+group = publishedGroupId
+version = libraryVersion
+
+task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    //source = android.sourceSets.main.java.srcDirs
+    //classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+if (project.rootProject.file('local.properties').exists()) {
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
+
+
+//bintray {
+//    user = properties.getProperty("bintray.user")
+//    key = properties.getProperty("bintray.apikey")
+//
+//    configurations = ['archives']
+//    pkg {
+//        repo = bintrayRepo
+//        name = bintrayName
+//        userOrg = bintrayOrg
+//        desc = libraryDescription
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = allLicenses
+//        dryRun = false
+//        publish = true
+//        override = false
+//        publicDownloadNumbers = true
+//        version {
+//            desc = libraryDescription
+//        }
+//    }
+//}
